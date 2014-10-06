@@ -56,21 +56,25 @@ var showAnswerer = function(answerer) {
 	// clone our result template code
 	var result = $('.templates .answerer').clone();
 
+	// -- image
+	var imageElem = result.find('.answerer-image');
+	imageElem.css('background-image', 'url(' + answerer.user.profile_image + ')');
+
 	// -- name
 	var nameElem = result.find('.name-text a');
 	nameElem.attr('href', answerer.user.link);
 	nameElem.text(answerer.user.display_name);
 
 	// -- reputation
-	var reputation = result.find('.reputation');
+	var reputation = result.find('.reputation span');
 	reputation.text(answerer.user.reputation);
 
 	// -- post-count
-	var post_count = result.find('.post-count');
+	var post_count = result.find('.post-count span');
 	post_count.text(answerer.post_count);
 
 	// -- score
-	var score = result.find('.score');
+	var score = result.find('.score span');
 	score.text(answerer.score);
 
 	return result;
