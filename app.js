@@ -123,21 +123,21 @@ var getUnanswered = function(tags) {
 	});
 };
 
-// takes a string of semi-colon separated tags to be searched
-// for on StackOverflow
-var getAnswerers = function(tags) {
+// takes a tag to be searched for on StackOverflow
+var getAnswerers = function(tag) {
 
 	// the parameters we need to pass in our request to StackOverflow's API
 	var request = { site: 'stackoverflow' };
 
 	var result = $.ajax({
-		url: "http://api.stackexchange.com/2.2/tags/" + tags + "/top-answerers/all_time",
+		url: "http://api.stackexchange.com/2.2/tags/" + tag + "/top-answerers/all_time",
 		data: request,
 		dataType: "jsonp",
 		type: "GET",
 		})
 	.done(function(result){
-		var searchResults = showSearchResults(tags, result.items.length);
+		var tag = $('#answerers-tag').val();
+		var searchResults = showSearchResults(tag, result.items.length);
 
 		$('.search-results').html(searchResults);
 
