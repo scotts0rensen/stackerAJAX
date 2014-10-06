@@ -1,19 +1,20 @@
 $(document).ready( function() {
 	$('.unanswered-getter').submit( function(event){
-		// zero out results if previous search has run
-		$('.results').html('');
-		// get the value of the tags the user submitted
-		var tags = $(this).find("input[name='tags']").val();
-		getUnanswered(tags);
+		getResults($(this), 'getUnanswered');
 	});
 	$('.inspiration-getter').submit( function(event){
-		// zero out results if previous search has run
-		$('.results').html('');
-		// get the value of the tags the user submitted
-		var tags = $(this).find("input[name='tag']").val();
-		getAnswerers(tags);
+		getResults($(this), 'getAnswerers');
 	});
 });
+
+var getResults = function(formElem, functionName) {
+	// clear previous results
+	$('.results').html('');
+	// get form input
+	var tags = formElem.find("input[name='tags']").val();
+	// call function to fetch and show the results
+	window[functionName](tags);
+}
 
 // this function takes the question object returned by StackOverflow
 // and creates new result to be appended to DOM
@@ -88,6 +89,11 @@ var showSearchResults = function(query, resultNum) {
 	return results;
 };
 
+var ajaxFailHandler = function(jqXHR, error, errorThrown) {
+	var errorElem = showError(error);
+	$('.search-results').append(errorElem);
+});
+
 // takes error string and turns it into displayable DOM element
 var showError = function(error){
 	var errorElem = $('.templates .error').clone();
@@ -121,10 +127,7 @@ var getUnanswered = function(tags) {
 			$('.results').append(question);
 		});
 	})
-	.fail(function(jqXHR, error, errorThrown){
-		var errorElem = showError(error);
-		$('.search-results').append(errorElem);
-	});
+	.fail(ajaxFailHandler);
 };
 
 // takes a tag to be searched for on StackOverflow
@@ -133,7 +136,7 @@ var getAnswerers = function(tag) {
 	// the parameters we need to pass in our request to StackOverflow's API
 	var request = { site: 'stackoverflow' };
 
-	var result = $.ajax({
+	$.ajax({
 		url: "http://api.stackexchange.com/2.2/tags/" + tag + "/top-answerers/all_time",
 		data: request,
 		dataType: "jsonp",
@@ -150,10 +153,7 @@ var getAnswerers = function(tag) {
 			$('.results').append(answerer);
 		});
 	})
-	.fail(function(jqXHR, error, errorThrown){
-		var errorElem = showError(error);
-		$('.search-results').append(errorElem);
-	});
+	.fail(ajaxFailHandler);
 };
 
 
