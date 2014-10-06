@@ -105,7 +105,7 @@ var getUnanswered = function(tags) {
 								order: 'desc',
 								sort: 'creation'};
 
-	var result = $.ajax({
+	$.ajax({
 		url: "http://api.stackexchange.com/2.2/questions/unanswered",
 		data: request,
 		dataType: "jsonp",
