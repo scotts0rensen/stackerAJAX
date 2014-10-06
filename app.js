@@ -14,7 +14,7 @@ var getResults = function(formElem, functionName) {
 	var tags = formElem.find("input[name='tags']").val();
 	// call function to fetch and show the results
 	window[functionName](tags);
-}
+};
 
 // this function takes the question object returned by StackOverflow
 // and creates new result to be appended to DOM
@@ -92,7 +92,7 @@ var showSearchResults = function(query, resultNum) {
 var ajaxFailHandler = function(jqXHR, error, errorThrown) {
 	var errorElem = showError(error);
 	$('.search-results').append(errorElem);
-});
+};
 
 // takes error string and turns it into displayable DOM element
 var showError = function(error){
